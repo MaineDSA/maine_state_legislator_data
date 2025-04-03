@@ -62,8 +62,6 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
     return email, ""
 
 
-@ratelimit.sleep_and_retry
-@ratelimit.limits(calls=7, period=5)
 def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str]]:
     page_url = url._replace(query=f"{query}={value}")
 
