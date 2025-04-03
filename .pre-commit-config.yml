@@ -28,9 +28,3 @@ repos:
       rev: v1.9.0
       hooks:
           - id: mypy
-ci:
-    autoupdate_branch: 'pre-commit/update-hooks'
-    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
-    autoupdate_schedule: weekly
-    skip: []
-    submodules: false
