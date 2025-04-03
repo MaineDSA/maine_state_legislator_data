@@ -21,7 +21,7 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
     logger.debug("Extracting data from legislator string: %s", formatted_text)
 
     # Extract  town, district, and member name from the formatted string
-    match = re.match(r"([A-Za-z\s()T\d\w-]+)\s*-\s*District\s+(\d+)\s*-\s*(.+?)\s*\((.+)\)", formatted_text)
+    match = re.match(r"([\W\w\s()-]+)\s*-\s*District\s+(\d+)\s*-\s*(.+?)\s*\((.+)\)", formatted_text)
     if not match:
         logger.error("Regex match not found, can't extract legislator district data")
         return "", "", "", ""
