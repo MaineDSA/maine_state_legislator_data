@@ -23,6 +23,7 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
     # Extract  town, district, and member name from the formatted string
     match = re.match(r"([A-Za-z\s()T\d\w-]+)\s*-\s*District\s+(\d+)\s*-\s*(.+?)\s*\((.+)\)", formatted_text)
     if not match:
+        logger.error("Regex match not found, can't extract legislator district data")
         return "", "", "", ""
 
     town = match.group(1).strip()
@@ -38,6 +39,7 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, str]:
     page_url = url._replace(path=path)
 
+    logger.debug("Getting legislator data from URL: %s", page_url.geturl())
     response = requests.get(page_url.geturl(), allow_redirects=True)
     soup = BeautifulSoup(response.content, "html.parser")
 
@@ -51,6 +53,7 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
 
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
+        logger.warning("Email not found")
         return "", ""
     email = email_tag.getText().strip()
 
@@ -62,6 +65,7 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
             continue
         return email, phone_tag.getText().strip()
 
+    logger.warning("Phone not found")
     return email, ""
 
 
