@@ -43,7 +43,7 @@ def scrape_committees(spans_medium: ResultSet) -> str:
             committee_tag_2 = committee_tag_1.find_next_sibling("span")
             if committee_tag_2:
                 committees = f"{committees}; {committee_tag_2.getText().strip()}"
-                committee_tag_3 = committee_tag_1.find_next_sibling("span")
+                committee_tag_3 = committee_tag_2.find_next_sibling("span")
                 if committee_tag_3:
                     committees = f"{committees}; {committee_tag_3.getText().strip()}"
     return committees
