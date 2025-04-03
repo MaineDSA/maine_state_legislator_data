@@ -6,7 +6,7 @@ from urllib.parse import ParseResult
 
 import ratelimit
 import requests
-from bs4 import BeautifulSoup, PageElement, Tag
+from bs4 import BeautifulSoup, PageElement, ResultSet, Tag
 from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
@@ -34,6 +34,21 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
     return district, town, member, party
 
 
+def scrape_committees(spans_medium: ResultSet) -> str:
+    committees = ""
+    for committees_tag in spans_medium:
+        if committees_tag and isinstance(committees_tag, Tag) and committees_tag.getText() == "Committee(s):":
+            committee_tag_1 = committees_tag.find_next("span").find_next("span")
+            committees = committee_tag_1.getText().strip()
+            committee_tag_2 = committee_tag_1.find_next_sibling("span")
+            if committee_tag_2:
+                committees = f"{committees}; {committee_tag_2.getText().strip()}"
+                committee_tag_3 = committee_tag_1.find_next_sibling("span")
+                if committee_tag_3:
+                    committees = f"{committees}; {committee_tag_3.getText().strip()}"
+    return committees
+
+
 @ratelimit.sleep_and_retry
 @ratelimit.limits(calls=5, period=3)
 def scrape_detailed_legislator_info(url: ParseResult, path: str) -> tuple[str, str, str]:
@@ -51,15 +66,8 @@ def scrape_detailed_legislator_info(url: ParseResult, path: str) -> tuple[str, s
     if not info_paragraph or not isinstance(info_paragraph, Tag):
         return "", "", ""
 
-    committees = ""
     spans_medium = main_info.find_all("span", class_="font_weight_m")
-    for committees_tag in spans_medium:
-        if committees_tag and isinstance(committees_tag, Tag) and committees_tag.getText() == "Committee(s):":
-            committee_tag_1 = committees_tag.find_next("span").find_next("span")
-            committees = committee_tag_1.getText().strip()
-            committee_tag_2 = committee_tag_1.find_next_sibling("span")
-            if committee_tag_2:
-                committees = f"{committees} {committee_tag_2.getText().strip()}"
+    committees = scrape_committees(spans_medium)
 
     email = ""
     email_tag = info_paragraph.find("a", href=True)
