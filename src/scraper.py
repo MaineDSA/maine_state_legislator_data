@@ -36,7 +36,7 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 
 @ratelimit.sleep_and_retry
 @ratelimit.limits(calls=5, period=3)
-def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, str]:
+def scrape_detailed_legislator_info(url: ParseResult, path: str) -> tuple[str, str, str]:
     page_url = url._replace(path=path)
 
     logger.debug("Getting legislator data from URL: %s", page_url.geturl())
@@ -45,28 +45,41 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
 
     main_info = soup.find("div", id="main-info")
     if not main_info or not isinstance(main_info, Tag):
-        return "", ""
+        return "", "", ""
 
     info_paragraph = main_info.find("p")
     if not info_paragraph or not isinstance(info_paragraph, Tag):
-        return "", ""
+        return "", "", ""
 
+    committees = ""
+    spans_medium = main_info.find_all("span", class_="font_weight_m")
+    for committees_tag in spans_medium:
+        if committees_tag and isinstance(committees_tag, Tag) and committees_tag.getText() == "Committee(s):":
+            committee_tag_1 = committees_tag.find_next("span").find_next("span")
+            committees = committee_tag_1.getText().strip()
+            committee_tag_2 = committee_tag_1.find_next_sibling("span")
+            if committee_tag_2:
+                committees = f"{committees} {committee_tag_2.getText().strip()}"
+
+    email = ""
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
         logger.warning("Email not found")
-        return "", ""
-    email = email_tag.getText().strip()
+    else:
+        email = email_tag.getText().strip()
 
+    phone = ""
     phone_possible = info_paragraph.find("span", class_="text_right")
     if not phone_possible:
-        return email, ""
+        return email, phone, committees
     for phone_tag in phone_possible:
         if not isinstance(phone_tag, PageElement):
             continue
-        return email, phone_tag.getText().strip()
+        phone = phone_tag.getText().strip()
+        return email, phone, committees
 
     logger.warning("Phone not found")
-    return email, ""
+    return email, phone, committees
 
 
 def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str, str, str]]:
@@ -84,8 +97,8 @@ def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedL
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
-        email, phone = scrape_legislator_contact_info(url, row_link["href"])
-        legislators.append((district, town, member, party, email, phone))
+        email, phone, committees = scrape_detailed_legislator_info(url, row_link["href"])
+        legislators.append((district, town, member, party, email, phone, committees))
 
     return legislators
 
@@ -108,7 +121,7 @@ def main() -> None:
 
     with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerows([("District", "Town", "Member", "Party", "Email", "Phone")])
+        writer.writerows([("District", "Town", "Member", "Party", "Email", "Phone", "Committees")])
         for page in pages:
             writer.writerows(page)
 
