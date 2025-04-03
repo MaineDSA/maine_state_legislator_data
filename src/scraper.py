@@ -1,13 +1,15 @@
+import csv
+import logging
 import re
 from pathlib import Path
 from urllib.parse import ParseResult
 
 import ratelimit
 import requests
-from bs4 import BeautifulSoup, Tag, PageElement
-import csv
-
+from bs4 import BeautifulSoup, PageElement, Tag
 from tqdm import tqdm
+
+logger = logging.getLogger(__name__)
 
 
 def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
@@ -16,9 +18,10 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 
     formatted_text = re.sub(r"[\r\n]", " ", text)
     formatted_text = re.sub(r"\s+", " ", formatted_text)
+    logger.debug("Extracting data from legislator string: %s", formatted_text)
 
     # Extract  town, district, and member name from the formatted string
-    match = re.match(r"([A-Za-z\s()]+)\s*-\s*District\s+(\d+)\s*-\s*(.+)\s*\((.+)\)", formatted_text)
+    match = re.match(r"([A-Za-z\s()T\d\w-]+)\s*-\s*District\s+(\d+)\s*-\s*(.+?)\s*\((.+)\)", formatted_text)
     if not match:
         return "", "", "", ""
 
@@ -31,7 +34,7 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 
 
 @ratelimit.sleep_and_retry
-@ratelimit.limits(calls=12, period=10)
+@ratelimit.limits(calls=5, period=3)
 def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, str]:
     page_url = url._replace(path=path)
 
@@ -49,7 +52,7 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
         return "", ""
-    email = email_tag.getText()
+    email = email_tag.getText().strip()
 
     phone_possible = info_paragraph.find("span", class_="text_right")
     if not phone_possible:
@@ -57,16 +60,12 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
     for phone_tag in phone_possible:
         if not isinstance(phone_tag, PageElement):
             continue
-        phone = phone_tag.getText()
-        if phone and re.match(phone, r"(\d{3}) \d{3}-\d{4}"):
-            return email, phone
+        return email, phone_tag.getText().strip()
 
     return email, ""
 
 
-@ratelimit.sleep_and_retry
-@ratelimit.limits(calls=7, period=5)
-def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str]]:
+def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str, str, str]]:
     page_url = url._replace(query=f"{query}={value}")
 
     response = requests.get(page_url.geturl(), allow_redirects=True)
@@ -77,7 +76,7 @@ def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedL
         return []
 
     legislators: list = []
-    for table_row_tag in table_tag.find_all("tr")[2:]:  # Skip first 2 rows (header)
+    for table_row_tag in tqdm(table_tag.find_all("tr")[2:], unit="legislators", leave=False):  # Skip first 2 rows (header)
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
@@ -101,16 +100,16 @@ def main() -> None:
     url = ParseResult(scheme="https", netloc="legislature.maine.gov:443", path="/house/house/MemberProfiles/ListAlphaTown", params="", query="", fragment="")
 
     letters = get_pagination(url)
-    letters = [letters[0]]
-    pages = [parse_legislators_page(url, letter) for letter in tqdm(letters, unit="pages")]
+    pages = [parse_legislators_page(url, letter) for letter in tqdm(letters, unit="page")]
 
     with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerows([("District", "Town", "Member", "Party")])
+        writer.writerows([("District", "Town", "Member", "Party", "Email", "Phone")])
         for page in pages:
             writer.writerows(page)
 
-    print("CSV file 'district_data.csv' has been created.")
+    logger.info("CSV file 'district_data.csv' has been created.")
 
 
-main()
+if __name__ == "__main__":
+    main()
