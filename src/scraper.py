@@ -49,7 +49,7 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
         return "", ""
-    email = email_tag.getText()
+    email = email_tag.getText().strip()
 
     phone_possible = info_paragraph.find("span", class_="text_right")
     if not phone_possible:
@@ -57,9 +57,7 @@ def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, st
     for phone_tag in phone_possible:
         if not isinstance(phone_tag, PageElement):
             continue
-        phone = phone_tag.getText()
-        if phone and re.match(phone, r"(\d{3}) \d{3}-\d{4}"):
-            return email, phone
+        return email, phone_tag.getText().strip()
 
     return email, ""
 
@@ -106,7 +104,7 @@ def main() -> None:
 
     with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerows([("District", "Town", "Member", "Party")])
+        writer.writerows([("District", "Town", "Member", "Party", "Email", "Phone")])
         for page in pages:
             writer.writerows(page)
 
