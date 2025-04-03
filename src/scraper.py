@@ -4,7 +4,7 @@ from urllib.parse import ParseResult
 
 import ratelimit
 import requests
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Tag, PageElement
 import csv
 
 from tqdm import tqdm
@@ -32,21 +32,57 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 
 @ratelimit.sleep_and_retry
 @ratelimit.limits(calls=12, period=10)
-def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str]]:
-    page_url = url
-    page_url = page_url._replace(query=f"{query}={value}")
+def scrape_legislator_contact_info(url: ParseResult, path: str) -> tuple[str, str]:
+    page_url = url._replace(path=path)
 
     response = requests.get(page_url.geturl(), allow_redirects=True)
     soup = BeautifulSoup(response.content, "html.parser")
 
-    table_tag = soup.find("table", class_="short-table")
+    main_info = soup.find("div", id="main-info")
+    if not main_info or not isinstance(main_info, Tag):
+        return "", ""
+
+    info_paragraph = main_info.find("p")
+    if not info_paragraph or not isinstance(info_paragraph, Tag):
+        return "", ""
+
+    email_tag = info_paragraph.find("a", href=True)
+    if not email_tag or not isinstance(email_tag, Tag):
+        return "", ""
+    email = email_tag.getText()
+
+    phone_possible = info_paragraph.find("span", class_="text_right")
+    if not phone_possible:
+        return email, ""
+    for phone_tag in phone_possible:
+        if not isinstance(phone_tag, PageElement):
+            continue
+        phone = phone_tag.getText()
+        if phone and re.match(phone, r"(\d{3}) \d{3}-\d{4}"):
+            return email, phone
+
+    return email, ""
+
+
+@ratelimit.sleep_and_retry
+@ratelimit.limits(calls=7, period=5)
+def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str]]:
+    page_url = url._replace(query=f"{query}={value}")
+
+    response = requests.get(page_url.geturl(), allow_redirects=True)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    table_tag = soup.find("table", class_="short-table white")
     if not table_tag or not isinstance(table_tag, Tag):
         return []
 
     legislators: list = []
     for table_row_tag in table_tag.find_all("tr")[2:]:  # Skip first 2 rows (header)
-        table_cell = table_row_tag.find("td", class_="short-tabletdlf")
-        extract_legislator_from_string(table_cell.get_text())
+        row_cell = table_row_tag.find("td", class_="short-tabletdlf")
+        district, town, member, party = extract_legislator_from_string(row_cell.get_text())
+        row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
+        email, phone = scrape_legislator_contact_info(url, row_link["href"])
+        legislators.append((district, town, member, party, email, phone))
 
     return legislators
 
@@ -65,6 +101,7 @@ def main() -> None:
     url = ParseResult(scheme="https", netloc="legislature.maine.gov:443", path="/house/house/MemberProfiles/ListAlphaTown", params="", query="", fragment="")
 
     letters = get_pagination(url)
+    letters = [letters[0]]
     pages = [parse_legislators_page(url, letter) for letter in tqdm(letters, unit="pages")]
 
     with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
