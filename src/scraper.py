@@ -77,7 +77,7 @@ def parse_legislators_page(url: ParseResult, value: str, query: str = "selectedL
         return []
 
     legislators: list = []
-    for table_row_tag in table_tag.find_all("tr")[2:]:  # Skip first 2 rows (header)
+    for table_row_tag in tqdm(table_tag.find_all("tr")[2:], unit="legislators", leave=False):  # Skip first 2 rows (header)
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
