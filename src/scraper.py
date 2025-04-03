@@ -99,7 +99,6 @@ def main() -> None:
     url = ParseResult(scheme="https", netloc="legislature.maine.gov:443", path="/house/house/MemberProfiles/ListAlphaTown", params="", query="", fragment="")
 
     letters = get_pagination(url)
-    letters = [letters[0]]
     pages = [parse_legislators_page(url, letter) for letter in tqdm(letters, unit="pages")]
 
     with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
