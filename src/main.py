@@ -50,7 +50,7 @@ def scrape_committees(spans_medium: ResultSet) -> str:
 
 
 @ratelimit.sleep_and_retry
-@ratelimit.limits(calls=5, period=3)
+@ratelimit.limits(calls=1, period=3)
 def scrape_detailed_legislator_info(url: ParseResult, path: str) -> tuple[str, str, str]:
     page_url = url._replace(path=path)
 
