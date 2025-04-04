@@ -1,4 +1,4 @@
-from src.scraper import extract_legislator_from_string
+from src.main import extract_legislator_from_string
 
 
 def test_extract_legislator_from_string() -> None:
