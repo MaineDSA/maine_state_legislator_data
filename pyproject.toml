@@ -15,7 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "bandit[toml]==1.8.3",
+    "bandit[toml,sarif]==1.8.3",
     "mypy==1.15.0",
     "pre-commit==4.2.0",
     "pytest-cov==6.0.0",
@@ -26,14 +26,14 @@ dev = [
     "types-requests==2.32.0.20250328",
     "types-tqdm==4.67.0.20250319"
 ]
-
 github-actions = [
     "coverage==7.8.0",
+    "pytest-cov==6.0.0",
 ]
 
 [tool.ruff]
 line-length = 160
-target-version = "py311"
+target-version = "py310"
 include = [
     "src/**/*.py",
     "tests/**/*.py",
@@ -83,11 +83,6 @@ ignore = [
     "D212",
 ]
 
-[tool.mypy]
-[[tool.mypy.overrides]]
-module = "ratelimit"
-follow_untyped_imports = true
-
 [tool.pytest.ini_options]
 addopts = "--cov=src -n auto"
 testpaths = [
@@ -109,11 +104,11 @@ omit = [
 
 [tool.coverage.report]
 exclude_also = [
-    "logging.info",
+    "logger.",
 ]
 
 [tool.bandit]
 exclude_dirs = [
-    "tests/",
-    ".venv/",
+    "./tests/",
+    "./.venv/",
 ]
