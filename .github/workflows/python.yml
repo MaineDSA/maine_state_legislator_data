@@ -166,12 +166,14 @@ jobs:
                   ruff check --output-format=sarif -o results.sarif .
 
             - name: Upload SARIF file to code scanning
+              if: failure() && steps.run-ruff-sarif.outcome == 'failure'
               uses: github/codeql-action/upload-sarif@1b549b9259bda1cb5ddde3b41741a82a2d15a841
               with:
                   sarif_file: results.sarif
 
             - name: Run ruff
               id: run-ruff
+              if: failure() && steps.run-ruff-sarif.outcome == 'failure'
               run: |
                   ruff check --output-format=github .
 
