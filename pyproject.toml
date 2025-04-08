@@ -83,6 +83,13 @@ ignore = [
     "D212",
 ]
 
+[tool.mypy]
+[[tool.mypy.overrides]]
+module = [
+    "ratelimit",
+]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 addopts = "--cov=src -n auto"
 testpaths = [
