@@ -7,7 +7,7 @@ license = { "file" = "LICENSE" }
 authors = [{ "name" = "bmos", "email" = "wil.t.dsa@pm.me" }]
 urls = { "GitHub" = "https://github.com/MaineDSA/maine_state_legislator_data" }
 dependencies = [
-    "beautifulsoup4==4.13.3",
+    "beautifulsoup4==4.13.4",
     "ratelimit==2.2.1",
     "requests==2.32.3",
     "tqdm==4.67.1",
