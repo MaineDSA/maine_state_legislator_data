@@ -23,7 +23,7 @@ dev = [
     "pytest==8.3.5",
     "ruff==0.11.12",
     "types-beautifulsoup4==4.12.0.20250516",
-    "types-requests==2.32.0.20250328",
+    "types-requests==2.32.0.20250515",
     "types-tqdm==4.67.0.20250516"
 ]
 github-actions = [
