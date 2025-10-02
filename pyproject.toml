@@ -16,7 +16,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "bandit[toml,sarif]==1.8.3",
-    "mypy==1.17.1",
+    "mypy==1.18.2",
     "pre-commit==4.3.0",
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
