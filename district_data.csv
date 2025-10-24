@@ -56,7 +56,7 @@ District,Town,Member,Party,Email,Phone,Committees
 30,unorganized territory of Blanchard,James Lee White,R - Guilford,James.White@legislature.maine.gov,(207) 564-7308,Transportation
 16,Blue Hill,Nina Azella Milliken,D - Blue Hill,Nina.Milliken@legislature.maine.gov,(207) 412-8828,Elections; Criminal Justice and Public Safety
 48,Boothbay,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
-48,Boothbay Habor,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,Boothbay Harbor,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
 52,Bowdoin (Part),Sally Jeane Cluchey,D - Bowdoinham,Sally.Cluchey@legislature.maine.gov,(207) 814-8879,"Health Coverage, Insurance and Financial Services; Inland Fisheries and Wildlife"
 98,Bowdoin (Part),Kilton M. Webb,D - Durham,Kilton.Webb@legislature.maine.gov,(207) 458-0172,"Energy, Utilities and Technology"
 52,Bowdoinham,Sally Jeane Cluchey,D - Bowdoinham,Sally.Cluchey@legislature.maine.gov,(207) 814-8879,"Health Coverage, Insurance and Financial Services; Inland Fisheries and Wildlife"
@@ -188,7 +188,7 @@ District,Town,Member,Party,Email,Phone,Committees
 32,Exeter,Steven D. Foster,R - Dexter,Steven.Foster@legislature.maine.gov,(207) 924-4409,"Energy, Utilities and Technology - Ranking Member"
 67,Fairfield,Shelley Rudnicki,R - Fairfield,Shelley.Rudnicki@legislature.maine.gov,(207) 314-6898,Taxation - Ranking Member
 111,Falmouth (Part),Amy D. Kuhn,D - Falmouth,Amy.Kuhn@legislature.maine.gov,(207) 939-6903,Ethics; Judiciary - Chair
-112,Falmouth (Part),W. Edward Crockett,D - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
+112,Falmouth (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
 54,Farmingdale,Karen L. Montell,D - Gardiner,Karen.Montell@legislature.maine.gov,(207) 513-0102,Transportation
 75,Farmington,Stephan M. Bunker,D - Farmington,Stephan.Bunker@legislature.maine.gov,(207) 592-1247,"Agriculture, Conservation and Forestry; Criminal Justice and Public Safety"
 58,Fayette,Sharon C. Frost,U - Belgrade,Sharon.Frost@legislature.maine.gov,(207) 242-6079,"Agriculture, Conservation and Forestry; Veterans and Legal Affairs"
@@ -260,7 +260,6 @@ District,Town,Member,Party,Email,Phone,Committees
 8,Island Falls,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 15,Isle au Haut,Holly Rae Eaton,D - Deer Isle,Holly.Eaton@legislature.maine.gov,(207) 610-9281,Marine Resources; Transportation
 40,Islesboro,D. Michael Ray,D - Lincolnville,Michael.Ray@legislature.maine.gov,(207) 930-0371,Transportation
-72,township Jackman,Elizabeth M. Caruso,R - Caratunk,Elizabeth.Caruso@legislature.maine.gov,(207) 399-9992,Leaves of Absence; Judiciary
 73,Jackman,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
 38,Jackson,Benjamin C. Hymes,R - Waldo,Benjamin.Hymes@legislature.maine.gov,(207) 808-3413,Veterans and Legal Affairs
 76,Jay,Sheila A. Lyman,R - Livermore Falls,Sheila.Lyman@legislature.maine.gov,(207) 320-0588,Education and Cultural Affairs - Ranking Member
@@ -446,7 +445,7 @@ District,Town,Member,Party,Email,Phone,Committees
 87,Poland (Part),David W. Boyer,R - Poland,David.Boyer@legislature.maine.gov,(207) 274-4633,Elections; Veterans and Legal Affairs - Ranking Member
 1,Portage Lake,Lucien J.B. Daigle,R - Fort Kent,Lucien.Daigle@legislature.maine.gov,(207) 631-8082,Health and Human Services
 82,Porter,Nathan J. Wadsworth,R - Hiram,Nathan.Wadsworth@legislature.maine.gov,(207) 838-7451,"Bills in the Second Reading; Energy, Utilities and Technology"
-112,Portland (Part),W. Edward Crockett,D - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
+112,Portland (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
 113,Portland (Part),Grayson B. Lookner,D - Portland,Grayson.Lookner@legislature.maine.gov,(207) 200-3860,Criminal Justice and Public Safety
 114,Portland (Part),Dylan R. Pugh,D - Portland,Dylan.Pugh@legislature.maine.gov,(207) 200-7791,Judiciary
 115,Portland (Part),Michael F. Brennan,D - Portland,Michael.Brennan@legislature.maine.gov,(207) 939-6462,Appropriations and Financial Affairs; Education and Cultural Affairs
