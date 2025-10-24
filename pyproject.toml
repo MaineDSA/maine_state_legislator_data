@@ -15,25 +15,20 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "bandit[toml,sarif]==1.8.3",
+    "bandit[sarif]==1.8.6",
     "mypy==1.18.2",
     "pre-commit==4.3.0",
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
     "pytest==8.4.1",
-    "ruff==0.11.12",
+    "ruff==0.14.1",
     "types-beautifulsoup4==4.12.0.20250516",
     "types-requests==2.32.4.20250913",
     "types-tqdm==4.67.0.20250809"
 ]
-github-actions = [
-    "coverage==7.10.7",
-    "pytest-cov==7.0.0",
-]
 
 [tool.ruff]
 line-length = 160
-target-version = "py310"
 include = [
     "src/**/*.py",
     "tests/**/*.py",
@@ -41,39 +36,22 @@ include = [
 
 [tool.ruff.lint]
 select = [
-    "A",
-    "ANN",
-    "ARG",
-    "B",
-    "BLE",
-    "C",
-    "C4",
-    "C90",
-    "D",
-    "DTZ",
-    "E",
-    "EM",
-    "F",
-    "G",
-    "I",
-    "ICN",
-    "ISC",
-    "LOG",
-    "N",
-    "PT",
-    "PTH",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "SIM",
-    "SLF",
-    "T20",
-    "TC",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "B", # flake8-bugbear (B)
+    "E", # pycodestyle errors (E)
+    "W", # pycodestyle warnings (W)
+    "C4", # flake8-comprehensions (C4)
+    "F", # Pyflakes (F)
+    "UP", # pyupgrade (UP)
+    "I", # isort (I)
+    "TID", # flake8-tidy-imports (TID)
+    "ICN", # flake8-import-conventions (ICN)
+    "Q", # flake8-quotes (Q)
+    "TC", # flake8-type-checking (TC)
+    "YTT", # flake8-2020 (YTT)
+    "SIM", # flake8-simplify (SIM)
+    "PTH", # flake8-use-pathlib (PTH)
+    "ISC", # flake8-implicit-str-concat (ISC)
+    "PT", # flake8-pytest-style (PT)
 ]
 ignore = [
     "D100",
@@ -83,17 +61,12 @@ ignore = [
     "D212",
 ]
 
-[tool.mypy]
-[[tool.mypy.overrides]]
-module = [
-    "ratelimit",
-]
-ignore_missing_imports = true
-
 [tool.pytest.ini_options]
-addopts = "--cov=src -n auto"
+addopts = "--cov=src --no-cov-on-fail -n auto"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
 testpaths = [
-    "tests",
+    "tests/",
 ]
 
 [tool.coverage.run]
@@ -106,7 +79,7 @@ source = [
     "src/",
 ]
 omit = [
-    "tests",
+    "tests/",
 ]
 
 [tool.coverage.report]
@@ -114,8 +87,9 @@ exclude_also = [
     "logger.",
 ]
 
-[tool.bandit]
-exclude_dirs = [
-    "./tests/",
-    "./.venv/",
+[tool.mypy]
+[[tool.mypy.overrides]]
+module = [
+    "ratelimit",
 ]
+ignore_missing_imports = true
