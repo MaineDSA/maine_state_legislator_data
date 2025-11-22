@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup, PageElement, ResultSet, Tag
 from tqdm import tqdm
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
