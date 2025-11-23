@@ -55,8 +55,8 @@ District,Town,Member,Party,Email,Phone,Committees
 6,Blaine,Donald J. Ardell,R - Monticello,Donald.Ardell@legislature.maine.gov,(207) 521-1130,Engrossed Bills; Criminal Justice and Public Safety
 30,unorganized territory of Blanchard,James Lee White,R - Guilford,James.White@legislature.maine.gov,(207) 564-7308,Transportation
 16,Blue Hill,Nina Azella Milliken,D - Blue Hill,Nina.Milliken@legislature.maine.gov,(207) 412-8828,Elections; Criminal Justice and Public Safety
-48,Boothbay,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
-48,Boothbay Harbor,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,Boothbay,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
+48,Boothbay Harbor,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
 52,Bowdoin (Part),Sally Jeane Cluchey,D - Bowdoinham,Sally.Cluchey@legislature.maine.gov,(207) 814-8879,"Health Coverage, Insurance and Financial Services; Inland Fisheries and Wildlife"
 98,Bowdoin (Part),Kilton M. Webb,D - Durham,Kilton.Webb@legislature.maine.gov,(207) 458-0172,"Energy, Utilities and Technology"
 52,Bowdoinham,Sally Jeane Cluchey,D - Bowdoinham,Sally.Cluchey@legislature.maine.gov,(207) 814-8879,"Health Coverage, Insurance and Financial Services; Inland Fisheries and Wildlife"
@@ -141,7 +141,7 @@ District,Town,Member,Party,Email,Phone,Committees
 2,unorganized territory of Cross Lake Township,Roger Clarence Albert,R - Madawaska,Roger.Albert@legislature.maine.gov,(207) 436-9156,Transportation
 8,Crystal,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 110,Cumberland,Christina R.C. Mitchell,D - Cumberland,Christina.Mitchell@legislature.maine.gov,(207) 829-6307,Education and Cultural Affairs
-43,Cushing,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Government Oversight Committee; State and Local Government; Taxation
+43,Cushing,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Appropriations and Financial Affairs; Taxation
 10,Cutler,William R. Tuell,R - East Machias,William.tuell@legislature.maine.gov,(207) 271-8521,State and Local Government
 3,plantation Cyr,Mark Michael Babin,R - Fort Fairfield,Mark.Babin@legislature.maine.gov,(207) 227-0198,Judiciary
 73,plantation Dallas,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
@@ -176,7 +176,7 @@ District,Town,Member,Party,Email,Phone,Committees
 3,Easton,Mark Michael Babin,R - Fort Fairfield,Mark.Babin@legislature.maine.gov,(207) 227-0198,Judiciary
 9,Eastport,Arthur Kevin Mingo,R - Calais,Arthur.Mingo@legislature.maine.gov,(207) 214-8537,Housing and Economic Development
 19,Eddington,Richard H. Campbell,R - Orrington,Richard.Campbell@legislature.maine.gov,(207) 745-7748,Ethics; Rules and Business of the House - Ranking Member; Environment and Natural Resources - Ranking Member
-48,Edgecomb,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,Edgecomb,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
 28,Edinburg,Irene A. Gifford,R - Lincoln,Irene.Gifford@legislature.maine.gov,(207) 290-5087,Engrossed Bills; Marine Resources
 10,unorganized territory of Edmunds Township,William R. Tuell,R - East Machias,William.tuell@legislature.maine.gov,(207) 271-8521,State and Local Government
 150,Eliot,Michele Meyer,D - Eliot,Michele.Meyer@legislature.maine.gov,(207) 438-9197,Health and Human Services - Chair
@@ -188,7 +188,7 @@ District,Town,Member,Party,Email,Phone,Committees
 32,Exeter,Steven D. Foster,R - Dexter,Steven.Foster@legislature.maine.gov,(207) 924-4409,"Energy, Utilities and Technology - Ranking Member"
 67,Fairfield,Shelley Rudnicki,R - Fairfield,Shelley.Rudnicki@legislature.maine.gov,(207) 314-6898,Taxation - Ranking Member
 111,Falmouth (Part),Amy D. Kuhn,D - Falmouth,Amy.Kuhn@legislature.maine.gov,(207) 939-6903,Ethics; Judiciary - Chair
-112,Falmouth (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
+112,Falmouth (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Education and Cultural Affairs; Taxation
 54,Farmingdale,Karen L. Montell,D - Gardiner,Karen.Montell@legislature.maine.gov,(207) 513-0102,Transportation
 75,Farmington,Stephan M. Bunker,D - Farmington,Stephan.Bunker@legislature.maine.gov,(207) 592-1247,"Agriculture, Conservation and Forestry; Criminal Justice and Public Safety"
 58,Fayette,Sharon C. Frost,U - Belgrade,Sharon.Frost@legislature.maine.gov,(207) 242-6079,"Agriculture, Conservation and Forestry; Veterans and Legal Affairs"
@@ -268,7 +268,7 @@ District,Town,Member,Party,Email,Phone,Committees
 11,Jonesport,Tiffany Strout,R - Harrington,Tiffany.Strout@legislature.maine.gov,(207) 598-7043,Marine Resources
 34,Kenduskeag,Abigail W. Griffin,R - Levant,Abigail.Griffin@legislature.maine.gov,(207) 403-3671,Health and Human Services
 134,Kennebunk (Part),Traci Gere,D - Kennebunkport,Traci.Gere@legislature.maine.gov,(207) 710-3557,Engrossed Bills; Housing and Economic Development - Chair
-135,Kennebunk (Part),Daniel Sayre,D - Kennebunk,Daniel.Sayre@legislature.maine.gov,(207) 613-6776,Taxation
+135,Kennebunk (Part),Daniel Sayre,D - Kennebunk,Daniel.Sayre@legislature.maine.gov,(207) 613-6776,Taxation - Chair
 134,Kennebunkport,Traci Gere,D - Kennebunkport,Traci.Gere@legislature.maine.gov,(207) 710-3557,Engrossed Bills; Housing and Economic Development - Chair
 73,Kingfield,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
 8,unorganized territory of Kingman Township,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
@@ -285,7 +285,7 @@ District,Town,Member,Party,Email,Phone,Committees
 91,Leeds,Joshua K. Morris,R - Turner,Joshua.Morris@legislature.maine.gov,(207) 754-7829,"Elections - Ranking Member; Health Coverage, Insurance and Financial Services"
 34,Levant,Abigail W. Griffin,R - Levant,Abigail.Griffin@legislature.maine.gov,(207) 403-3671,Health and Human Services
 93,Lewiston (Part),Julia A.G. McCabe,D - Lewiston,Julia.McCabe@legislature.maine.gov,(240) 498-9332,Leaves of Absence; Health and Human Services
-94,Lewiston (Part),Kristen Cloutier,D - Lewiston,Kristen.Cloutier@legislature.maine.gov,(207) 807-1637,Appropriations and Financial Affairs; Taxation - Chair
+94,Lewiston (Part),Kristen Cloutier,"D - Lewiston) (Resigned October 31, 2025",,(207) 807-1637,Legislative Service:
 95,Lewiston (Part),Mana H. Abdi,D - Lewiston,Mana.Abdi@legislature.maine.gov,(207) 520-7379,Bills in the Second Reading; Criminal Justice and Public Safety
 96,Lewiston (Part),Michel A. Lajoie,D - Lewiston,Michel.Lajoie@legislature.maine.gov,(207) 713-7119,Leaves of Absence - Chair; Criminal Justice and Public Safety
 72,unorganized territory of Lexington Township,Elizabeth M. Caruso,R - Caratunk,Elizabeth.Caruso@legislature.maine.gov,(207) 399-9992,Leaves of Absence; Judiciary
@@ -379,7 +379,7 @@ District,Town,Member,Party,Email,Phone,Committees
 46,Nobleboro,Lydia V. Crafts,D - Newcastle,Lydia.Crafts@legislature.maine.gov,(207) 593-2664,Elections - Chair; Transportation - Chair
 71,Norridgewock,"John ""Jack"" E. Ducharme",R - Madison,Jack.Ducharme@legislature.maine.gov,(207) 431-0775,Appropriations and Financial Affairs - Ranking Member
 148,North Berwick (Part),Thomas A. Lavigne,R - Berwick,Thomas.Lavigne@legislature.maine.gov,(603) 842-0814,Taxation
-149,North Berwick (Part),Tiffany Roberts,D - South Berwick,Tiffany.Roberts@legislature.maine.gov,(207) 210-3287,Housing and Economic Development; Inland Fisheries and Wildlife - Chair
+149,North Berwick (Part),Tiffany Roberts,D - South Berwick,Tiffany.Roberts@legislature.maine.gov,(207) 210-3287,Inland Fisheries and Wildlife - Chair
 73,unorganized territory of North Franklin,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
 42,North Haven,Valli D. Geiger,D - Rockland,Valli.Geiger@legislature.maine.gov,(207) 956-1565,"Energy, Utilities and Technology; Labor"
 73,unorganized territory of North Oxford,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
@@ -402,7 +402,7 @@ District,Town,Member,Party,Email,Phone,Committees
 7,Oakfield,Gregory Lewis Swallow,R - Houlton,Gregory.Swallow@legislature.maine.gov,(207) 521-7416,Taxation
 66,Oakland,Robert W. Nutting,R - Oakland,Robert.Nutting@legislature.maine.gov,(207) 629-7035,Ethics; Criminal Justice and Public Safety - Ranking Member
 146,Ogunquit,Walter Gerard Runte,D - York,Gerry.Runte@legislature.maine.gov,(207) 361-7143,"Leaves of Absence; Energy, Utilities and Technology"
-131,Old Orchard Beach,Lori K. Gramlich,D - Old Orchard Beach,Lori.Gramlich@legislature.maine.gov,(207) 287-1430,Engrossed Bills
+131,Old Orchard Beach,Lori K. Gramlich,D - Old Orchard Beach,Lori.Gramlich@legislature.maine.gov,(207) 287-1430,Engrossed Bills; State and Local Government; Taxation
 26,Old Town,James F. Dill,D - Old Town,James.Dill@legislature.maine.gov,(207) 827-3498,"Elections; Agriculture, Conservation and Forestry; Inland Fisheries and Wildlife"
 8,Orient,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 17,Orland,Steven M. Bishop,R - Bucksport,Steven.Bishop@legislature.maine.gov,(207) 991-7909,Transportation
@@ -414,7 +414,7 @@ District,Town,Member,Party,Email,Phone,Committees
 18,Otis,Mathew David McIntyre,R - Lowell,Mathew.McIntyre@legislature.maine.gov,(207) 680-0678,"Engrossed Bills - Ranking Member; Criminal Justice and Public Safety; Energy, Utilities and Technology"
 80,Otisfield,Caldwell Jackson,R - Oxford,Caldwell.Jackson@legislature.maine.gov,(207) 272-8543,"Agriculture, Conservation and Forestry"
 42,Owls Head (Part),Valli D. Geiger,D - Rockland,Valli.Geiger@legislature.maine.gov,(207) 956-1565,"Energy, Utilities and Technology; Labor"
-43,Owls Head (Part),Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Government Oversight Committee; State and Local Government; Taxation
+43,Owls Head (Part),Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Appropriations and Financial Affairs; Taxation
 6,plantation Oxbow North Township,Donald J. Ardell,R - Monticello,Donald.Ardell@legislature.maine.gov,(207) 521-1130,Engrossed Bills; Criminal Justice and Public Safety
 80,Oxford,Caldwell Jackson,R - Oxford,Caldwell.Jackson@legislature.maine.gov,(207) 272-8543,"Agriculture, Conservation and Forestry"
 62,Palermo,Katrina J. Smith,R - Palermo,Katrina.Smith@legislature.maine.gov,(207) 230-9583,Ethics; Rules and Business of the House; Joint Select Committee on Joint Rules
@@ -445,8 +445,8 @@ District,Town,Member,Party,Email,Phone,Committees
 87,Poland (Part),David W. Boyer,R - Poland,David.Boyer@legislature.maine.gov,(207) 274-4633,Elections; Veterans and Legal Affairs - Ranking Member
 1,Portage Lake,Lucien J.B. Daigle,R - Fort Kent,Lucien.Daigle@legislature.maine.gov,(207) 631-8082,Health and Human Services
 82,Porter,Nathan J. Wadsworth,R - Hiram,Nathan.Wadsworth@legislature.maine.gov,(207) 838-7451,"Bills in the Second Reading; Energy, Utilities and Technology"
-112,Portland (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Elections; Education and Cultural Affairs; Taxation
-113,Portland (Part),Grayson B. Lookner,D - Portland,Grayson.Lookner@legislature.maine.gov,(207) 200-3860,Criminal Justice and Public Safety
+112,Portland (Part),W. Edward Crockett,U - Portland,Ed.Crockett@legislature.maine.gov,(207) 797-8371,Education and Cultural Affairs; Taxation
+113,Portland (Part),Grayson B. Lookner,D - Portland,Grayson.Lookner@legislature.maine.gov,(207) 200-3860,Criminal Justice and Public Safety; Housing and Economic Development
 114,Portland (Part),Dylan R. Pugh,D - Portland,Dylan.Pugh@legislature.maine.gov,(207) 200-7791,Judiciary
 115,Portland (Part),Michael F. Brennan,D - Portland,Michael.Brennan@legislature.maine.gov,(207) 939-6462,Appropriations and Financial Affairs; Education and Cultural Affairs
 116,Portland (Part),Samuel Lewis Zager,D - Portland,Sam.Zager@legislature.maine.gov,(207) 400-6846,Health and Human Services
@@ -508,17 +508,17 @@ District,Town,Member,Party,Email,Phone,Committees
 62,Somerville,Katrina J. Smith,R - Palermo,Katrina.Smith@legislature.maine.gov,(207) 230-9583,Ethics; Rules and Business of the House; Joint Select Committee on Joint Rules
 12,Sorrento,Billy Bob Faulkingham,R - Winter Harbor,William.Faulkingham@legislature.maine.gov,(207) 460-6967,Joint Select Committee on Joint Rules - Ranking Member
 8,unorganized territory of South Aroostook,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
-149,South Berwick (Part),Tiffany Roberts,D - South Berwick,Tiffany.Roberts@legislature.maine.gov,(207) 210-3287,Housing and Economic Development; Inland Fisheries and Wildlife - Chair
+149,South Berwick (Part),Tiffany Roberts,D - South Berwick,Tiffany.Roberts@legislature.maine.gov,(207) 210-3287,Inland Fisheries and Wildlife - Chair
 150,South Berwick (Part),Michele Meyer,D - Eliot,Michele.Meyer@legislature.maine.gov,(207) 438-9197,Health and Human Services - Chair
-48,South Bristol,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,South Bristol,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
 74,South Franklin,Randall C. Hall,R - Wilton,Randall.Hall@legislature.maine.gov,(207) 860-8431,Legislative Service:
 81,unorganized territory of South Oxford,Peter Conley Wood,R - Norway,Peter.Wood@legislature.maine.gov,(207) 890-3324,Marine Resources
 120,South Portland (Part),Deqa Dhalac,D - South Portland,Deqa.Dhalac@legislature.maine.gov,(207) 553-0303,Appropriations and Financial Affairs
 121,South Portland (Part),Christopher J. Kessler,D - South Portland,Christopher.Kessler@legislature.maine.gov,(207) 956-0882,"Bills in the Second Reading; Energy, Utilities and Technology"
 122,South Portland (Part),Matthew D. Beck,D - South Portland,Matthew.Beck@legislature.maine.gov,(207) 799-4025,Labor
-43,South Thomaston,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Government Oversight Committee; State and Local Government; Taxation
+43,South Thomaston,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Appropriations and Financial Affairs; Taxation
 31,Southeast Piscataquis,Chad R. Perkins,R - Dover-Foxcroft,Chad.Perkins@legislature.maine.gov,(207) 279-0927,Criminal Justice and Public Safety; Government Oversight Committee
-48,Southport,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,Southport,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
 15,Southwest Habor,Holly Rae Eaton,D - Deer Isle,Holly.Eaton@legislature.maine.gov,(207) 610-9281,Marine Resources; Transportation
 8,Springfield,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 141,Springvale (Part),Lucas John Lanigan,R - Sanford,Lucas.Lanigan@legislature.maine.gov,(207) 351-5383,Legislative Service:
@@ -527,7 +527,7 @@ District,Town,Member,Party,Email,Phone,Committees
 2,St. Agatha,Roger Clarence Albert,R - Madawaska,Roger.Albert@legislature.maine.gov,(207) 436-9156,Transportation
 69,St. Albans,Dean A. Cray,R - Palmyra,dean.cray@legislature.maine.gov,(207) 478-8279,"Bills in the Second Reading; Agriculture, Conservation and Forestry"
 1,St. Francis,Lucien J.B. Daigle,R - Fort Kent,Lucien.Daigle@legislature.maine.gov,(207) 631-8082,Health and Human Services
-43,St. George,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Government Oversight Committee; State and Local Government; Taxation
+43,St. George,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Appropriations and Financial Affairs; Taxation
 1,plantation St. John,Lucien J.B. Daigle,R - Fort Kent,Lucien.Daigle@legislature.maine.gov,(207) 631-8082,Health and Human Services
 8,Stacyville,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 84,Standish (Part),Mark Walker,R - Naples,Mark.Walker@legislature.maine.gov,(207) 272-2728,Housing and Economic Development
@@ -560,7 +560,7 @@ District,Town,Member,Party,Email,Phone,Committees
 6,township TD R2 WELS,Donald J. Ardell,R - Monticello,Donald.Ardell@legislature.maine.gov,(207) 521-1130,Engrossed Bills; Criminal Justice and Public Safety
 74,Temple,Randall C. Hall,R - Wilton,Randall.Hall@legislature.maine.gov,(207) 860-8431,Legislative Service:
 73,plantation The Forks,Michael Soboleski,R - Phillips,Michael.Soboleski@legislature.maine.gov,(207) 400-7233,Environment and Natural Resources; Labor
-43,Thomaston,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Government Oversight Committee; State and Local Government; Taxation
+43,Thomaston,Ann Higgins Matlack,D - St. George,Ann.Matlack@legislature.maine.gov,(207) 691-1474,Appropriations and Financial Affairs; Taxation
 38,Thorndike,Benjamin C. Hymes,R - Waldo,Benjamin.Hymes@legislature.maine.gov,(207) 808-3413,Veterans and Legal Affairs
 8,Topsfield,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
 51,Topsham (Part),Rafael Leo Macias,D - Topsham,Rafael.Macias@legislature.maine.gov,(207) 891-1084,Labor
@@ -610,11 +610,11 @@ District,Town,Member,Party,Email,Phone,Committees
 79,West Paris,Michael J. Lance,R - Paris,Michael.Lance@legislature.maine.gov,(207) 577-1022,Inland Fisheries and Wildlife
 126,Westbrook (Part),Drew Gattine,D - Westbrook,Andrew.Gattine@legislature.maine.gov,(207) 409-3477,Appropriations and Financial Affairs - Chair
 127,Westbrook (Part),Morgan J. Rielly,D - Westbrook,Morgan.Rielly@legislature.maine.gov,(207) 228-5767,Engrossed Bills - Chair; Environment and Natural Resources; Marine Resources
-128,Westbrook (Part),Suzanne M. Salisbury,D - Westbrook,Suzanne.Salisbury@legislature.maine.gov,(207) 899-6863,State and Local Government - Chair
+128,Westbrook (Part),Suzanne M. Salisbury,D - Westbrook,Suzanne.Salisbury@legislature.maine.gov,(207) 899-6863,Elections; State and Local Government - Chair
 6,Westfield,Donald J. Ardell,R - Monticello,Donald.Ardell@legislature.maine.gov,(207) 521-1130,Engrossed Bills; Criminal Justice and Public Safety
 3,Westmanland,Mark Michael Babin,R - Fort Fairfield,Mark.Babin@legislature.maine.gov,(207) 227-0198,Judiciary
 8,Weston,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
-48,Westport Island,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs
+48,Westport Island,Holly B. Stover,D - Boothbay,Holly.Stover@legislature.maine.gov,(207) 633-5979,Ethics; Appropriations and Financial Affairs; Government Oversight Committee
 47,Whitefield,Wayne K. Farrin,D - Jefferson,Wayne.Farrin@legislature.maine.gov,(207) 592-9057,Marine Resources; State and Local Government
 10,Whiting,William R. Tuell,R - East Machias,William.tuell@legislature.maine.gov,(207) 271-8521,State and Local Government
 8,unorganized territory of Whitney (Pukakon) Township,Tracy L. Quint,R - Hodgdon,Tracy.Quint@legislature.maine.gov,(207) 217-4493,Taxation
