@@ -10,15 +10,13 @@ from bs4 import BeautifulSoup, PageElement, ResultSet, Tag
 from tqdm import tqdm
 from urllib3.util.retry import Retry
 
+from .legislature_urls import HouseURL
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Rate limiting configuration
 REQUEST_DELAY = 3  # seconds between requests
-
-
-LEGISLATURE_NETLOC = "legislature.maine.gov"
-LEGISLATOR_LIST_PATH = "/house/house/MemberProfiles/ListAlphaTown"
 
 
 def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
@@ -58,10 +56,10 @@ def scrape_committees(spans_medium: ResultSet) -> str:
     return committees
 
 
-def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str, member: str) -> tuple[str, str, str]:
+def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: str, member: str) -> tuple[str, str, str]:
     time.sleep(REQUEST_DELAY)  # Rate limiting
-    url = urlunparse(("https", LEGISLATURE_NETLOC, path, "", "", ""))
 
+    url = urlunparse(("https", url, path, "", "", ""))
     logger.debug("Getting legislator data from URL: %s", url)
     response = http.request("GET", url)
     soup = BeautifulSoup(response.data, "html.parser")
@@ -101,10 +99,8 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str, member
 
 
 def parse_legislators_page(http: urllib3.PoolManager, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str, str, str, str]]:
-    query_string = urlencode({query: value})
-    url = urlunparse(("https", LEGISLATURE_NETLOC, LEGISLATOR_LIST_PATH, "", query_string, ""))
-
-    response = http.request("GET", url)
+    page_url = urlunparse(("https", HouseURL.StateLegislatureNetloc, HouseURL.MunicipalityListPath, "", urlencode({query: value}), ""))
+    response = http.request("GET", page_url)
     soup = BeautifulSoup(response.data, "html.parser")
 
     table_tag = soup.find("table", class_="short-table white")
@@ -116,16 +112,15 @@ def parse_legislators_page(http: urllib3.PoolManager, value: str, query: str = "
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
-        email, phone, committees = scrape_detailed_legislator_info(http, row_link["href"], member)
+        email, phone, committees = scrape_detailed_legislator_info(http, HouseURL.StateLegislatureNetloc, row_link["href"], member)
         legislators.append((district, town, member, party, email, phone, committees))
 
     return legislators
 
 
 def get_pagination(http: urllib3.PoolManager) -> list[str]:
-    url = urlunparse(("https", LEGISLATURE_NETLOC, LEGISLATOR_LIST_PATH, "", "", ""))
-
-    response = http.request("GET", url)
+    list_url = urlunparse(("https", HouseURL.StateLegislatureNetloc, HouseURL.MunicipalityListPath, "", "", ""))
+    response = http.request("GET", list_url)
     soup = BeautifulSoup(response.data, "html.parser")
     pages = soup.find("ul", class_="pagination")
     if not pages or not isinstance(pages, Tag):
