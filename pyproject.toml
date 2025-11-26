@@ -1,6 +1,6 @@
 [project]
 name = "maine_state_legislator_data"
-version = "1.0.0"
+version = "1.1.0"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { "file" = "LICENSE" }
@@ -8,9 +8,8 @@ authors = [{ "name" = "Ramona T", "email" = "ramona.t.dsa@pm.me" }]
 urls = { "GitHub" = "https://github.com/MaineDSA/maine_state_legislator_data" }
 dependencies = [
     "beautifulsoup4==4.14.2",
-    "ratelimit==2.2.1",
-    "requests==2.32.5",
     "tqdm==4.67.1",
+    "urllib3==2.5.0",
 ]
 
 [project.optional-dependencies]
@@ -23,7 +22,6 @@ dev = [
     "pytest==9.0.1",
     "ruff==0.14.5",
     "types-beautifulsoup4==4.12.0.20250516",
-    "types-requests==2.32.4.20250913",
     "types-tqdm==4.67.0.20250809"
 ]
 
@@ -118,10 +116,3 @@ exclude_also = [
     'if __name__ == "__main__":',
     "asyncio\\.run(main())",
 ]
-
-[tool.mypy]
-[[tool.mypy.overrides]]
-module = [
-    "ratelimit",
-]
-ignore_missing_imports = true
