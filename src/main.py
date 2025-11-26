@@ -58,7 +58,7 @@ def scrape_committees(spans_medium: ResultSet) -> str:
     return committees
 
 
-def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str) -> tuple[str, str, str]:
+def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str, member: str) -> tuple[str, str, str]:
     time.sleep(REQUEST_DELAY)  # Rate limiting
     url = urlunparse(("https", LEGISLATURE_NETLOC, path, "", "", ""))
 
@@ -80,7 +80,8 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str) -> tup
     email = ""
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
-        logger.warning("Email not found")
+        warn = f"Email not found for {member}"
+        logger.warning(warn)
     else:
         email = email_tag.getText().strip()
 
@@ -94,7 +95,8 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, path: str) -> tup
         phone = phone_tag.getText().strip()
         return email, phone, committees
 
-    logger.warning("Phone not found")
+    warn = f"Phone not found for {member}"
+    logger.warning(warn)
     return email, phone, committees
 
 
@@ -114,7 +116,7 @@ def parse_legislators_page(http: urllib3.PoolManager, value: str, query: str = "
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
-        email, phone, committees = scrape_detailed_legislator_info(http, row_link["href"])
+        email, phone, committees = scrape_detailed_legislator_info(http, row_link["href"], member)
         legislators.append((district, town, member, party, email, phone, committees))
 
     return legislators
