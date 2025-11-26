@@ -2,11 +2,12 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MaineDSA/maine_state_legislator_data/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
-|-------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| src/\_\_init\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
-| src/main.py         |      104 |       73 |       28 |        1 |     24% |26, 36, 47-58, 62-100, 104-122, 126-134, 139-151 |
-|           **TOTAL** |  **104** |   **73** |   **28** |    **1** | **24%** |           |
+| Name                     |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
+|------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
+| src/\_\_init\_\_.py      |        0 |        0 |        0 |        0 |    100% |           |
+| src/legislature\_urls.py |        8 |        0 |        0 |        0 |    100% |           |
+| src/main.py              |      102 |       72 |       28 |        1 |     24% |24, 34, 45-56, 60-98, 102-118, 122-129, 134-146 |
+|                **TOTAL** |  **110** |   **72** |   **28** |    **1** | **28%** |           |
 
 
 ## Setup coverage badge
