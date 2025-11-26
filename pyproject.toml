@@ -1,5 +1,5 @@
 [project]
-name = "maine_state_legislator_data"
+name = "maine_state_house_rep_data"
 version = "1.1.0"
 readme = "README.md"
 requires-python = ">=3.10"
