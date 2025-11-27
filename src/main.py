@@ -123,7 +123,8 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: s
             if not isinstance(phone_tag, PageElement):
                 continue
             phone = phone_tag.getText().strip()
-            return email, phone, committees
+            if re.search(r"^(1\s?)?(\d{3}|\(\d{3}\))[\s\-\\.]?\d{3}[\s\-\\.]?\d{4}", phone):
+                return email, phone, committees
 
     logger.warning("Phone not found for %s", member)
     return email, phone, committees
