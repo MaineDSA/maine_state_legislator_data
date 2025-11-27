@@ -118,13 +118,12 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: s
 
     phone = ""
     phone_possible = info_paragraph.find("span", class_="text_right")
-    if not phone_possible:
-        return email, phone, committees
-    for phone_tag in phone_possible:
-        if not isinstance(phone_tag, PageElement):
-            continue
-        phone = phone_tag.getText().strip()
-        return email, phone, committees
+    if phone_possible:
+        for phone_tag in phone_possible:
+            if not isinstance(phone_tag, PageElement):
+                continue
+            phone = phone_tag.getText().strip()
+            return email, phone, committees
 
     logger.warning("Phone not found for %s", member)
     return email, phone, committees
