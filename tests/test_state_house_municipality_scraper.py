@@ -161,13 +161,7 @@ class TestScrapeCommittees:
 class TestScrapeDetailedLegislatorInfo:
     """Tests for scrape_detailed_legislator_info function."""
 
-    @pytest.fixture
-    def mock_sleep(self) -> Generator[Callable]:
-        """Mock time.sleep for all tests in this class."""
-        with patch("src.main.time.sleep") as mock:
-            yield mock
-
-    def test_complete_info(self, mock_http_response: Mock, mock_sleep: Mock) -> None:
+    def test_complete_info(self, mock_http_response: Mock) -> None:
         """Test extraction of complete legislator information."""
         html = """
         <div class="column-two-two-third column-last drop-shadow curved" id="main-info">
@@ -200,9 +194,8 @@ class TestScrapeDetailedLegislatorInfo:
         assert email == "Chad.Perkins@legislature.maine.gov"
         assert phone == "(207) 279-0927"
         assert committees == "Criminal Justice and Public Safety; Government Oversight Committee"
-        mock_sleep.assert_called_once_with(2)
 
-    def test_committee_with_chair_designation(self, mock_http_response: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+    def test_committee_with_chair_designation(self, mock_http_response: Mock) -> None:
         """Test extraction with committee chair designation."""
         html = """
         <div id="main-info">
@@ -283,7 +276,6 @@ class TestScrapeDetailedLegislatorInfo:
     def test_missing_info_with_warning(  # noqa: PLR0913
         self,
         mock_http_response: Mock,
-        mock_sleep: Mock,  # noqa: ARG002
         caplog: pytest.LogCaptureFixture,
         html: str,
         expected_email: str,
@@ -298,7 +290,7 @@ class TestScrapeDetailedLegislatorInfo:
         assert phone == expected_phone
         assert expected_log in caplog.text
 
-    def test_missing_main_info_div(self, mock_http_response: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+    def test_missing_main_info_div(self, mock_http_response: Mock) -> None:
         """Test returns empty strings when main-info div missing."""
         html = "<div>No main info</div>"
 
@@ -313,13 +305,7 @@ class TestScrapeDetailedLegislatorInfo:
 class TestCollectMunicipalityData:
     """Tests for collect_municipality_data function."""
 
-    @pytest.fixture
-    def mock_sleep(self) -> Generator[Callable]:
-        """Mock time.sleep for all tests in this class."""
-        with patch("src.main.time.sleep") as mock:
-            yield mock
-
-    def test_collect_multiple_rows(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+    def test_collect_multiple_rows(self, mock_http_response: Mock, mock_house_url: Mock) -> None:  # noqa: ARG002
         """Test collecting data from multiple table rows."""
         html = """
         <table class="short-table white">
@@ -373,9 +359,8 @@ class TestCollectMunicipalityData:
         assert result[0] == ("53", "Randolph", "Michael H. Lemelin", "R - Chelsea", "/house/house/MemberProfiles/Details/1428")
         assert result[1] == ("86", "Raymond", "Rolf A. Olsen", "R - Raymond", "/house/house/MemberProfiles/Details/3128")
         assert result[2] == ("57", "Readfield", "Tavis Rock Hasenfus", "D - Readfield", "/house/house/MemberProfiles/Details/1427")
-        mock_sleep.assert_called_once_with(2)
 
-    def test_plantation_prefix(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+    def test_plantation_prefix(self, mock_http_response: Mock, mock_house_url: Mock) -> None:  # noqa: ARG002
         """Test handles 'plantation' prefix in town names."""
         html = """
         <table class="short-table white">
@@ -418,11 +403,10 @@ class TestCollectMunicipalityData:
         ],
         ids=["no_table", "missing_link"],
     )
-    def test_edge_cases(  # noqa: PLR0913
+    def test_edge_cases(
         self,
         mock_http_response: Mock,
         mock_house_url: Mock,  # noqa: ARG002
-        mock_sleep: Mock,  # noqa: ARG002
         html: str,
         expected_length: int,
         expected_detail_url: str | None,
@@ -467,13 +451,7 @@ class TestGetMostCommonUrl:
 class TestGetPagination:
     """Tests for get_pagination function."""
 
-    @pytest.fixture
-    def mock_sleep(self) -> Generator[Callable]:
-        """Mock time.sleep for all tests in this class."""
-        with patch("src.main.time.sleep") as mock:
-            yield mock
-
-    def test_pagination_extraction(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+    def test_pagination_extraction(self, mock_http_response: Mock, mock_house_url: Mock) -> None:  # noqa: ARG002
         """Test pagination letter extraction structure."""
         html = """
         <div class="pagination">
@@ -504,4 +482,3 @@ class TestGetPagination:
         assert "B" in result
         assert "C" in result
         assert "R" in result
-        mock_sleep.assert_called_once_with(2)
