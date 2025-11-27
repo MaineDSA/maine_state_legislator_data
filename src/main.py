@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Rate limiting configuration
-REQUEST_DELAY = 2  # seconds between requests
+REQUEST_DELAY = 5  # seconds between requests
 
 
 def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
