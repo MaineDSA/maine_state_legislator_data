@@ -2,6 +2,7 @@ import csv
 import logging
 import re
 import time
+from collections import Counter, defaultdict
 from pathlib import Path
 from urllib.parse import urlencode, urlunparse
 
@@ -20,17 +21,27 @@ REQUEST_DELAY = 2  # seconds between requests
 
 
 def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
+    """
+    Extract legislator information from a municipality string.
+
+    Args:
+    text: Raw text containing district, town, member name, and party information.
+
+    Returns:
+    Tuple of (district, town, member, party). Returns empty strings if parsing fails.
+
+    """
     if "District" not in text:
         return "", "", "", ""
 
     formatted_text = re.sub(r"[\r\n]", " ", text)
     formatted_text = re.sub(r"\s+", " ", formatted_text)
-    logger.debug("Extracting data from legislator string: %s", formatted_text)
+    logger.debug("Extracting data from municipality string: %s", formatted_text)
 
-    # Extract town, district, and member name from the formatted string
+    # Extract town, district, member name, and party from the formatted string
     match = re.match(r"([\W\w\s()-]+)\s*-\s*District\s+(\d+)\s*-\s*(.+?)\s*\((.+)\)", formatted_text)
     if not match:
-        logger.error("Regex match not found, can't extract legislator district data")
+        logger.error("Regex match not found, can't extract municipality district data")
         return "", "", "", ""
 
     town = match.group(1).strip()
@@ -42,6 +53,16 @@ def extract_legislator_from_string(text: str) -> tuple[str, str, str, str]:
 
 
 def scrape_committees(spans_medium: ResultSet) -> str:
+    """
+    Extract committee information from span elements.
+
+    Args:
+    spans_medium: BeautifulSoup ResultSet containing span elements with medium font weight.
+
+    Returns:
+    Semicolon-separated string of committee names, or empty string if none found.
+
+    """
     committees = ""
     for committees_tag in spans_medium:
         if committees_tag and isinstance(committees_tag, Tag) and committees_tag.getText() == "Committee(s):":
@@ -57,6 +78,19 @@ def scrape_committees(spans_medium: ResultSet) -> str:
 
 
 def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: str, member: str) -> tuple[str, str, str]:
+    """
+    Scrape detailed information from a legislator's detail page.
+
+    Args:
+    http: urllib3 PoolManager instance for making HTTP requests.
+    url: Base URL/netloc for the legislature website.
+    path: URL path to the legislator's detail page.
+    member: Name of the legislator (used for logging).
+
+    Returns:
+    Tuple of (email, phone, committees). Returns empty strings for missing data.
+
+    """
     time.sleep(REQUEST_DELAY)  # Rate limiting
 
     url = urlunparse(("https", url, path, "", "", ""))
@@ -78,8 +112,7 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: s
     email = ""
     email_tag = info_paragraph.find("a", href=True)
     if not email_tag or not isinstance(email_tag, Tag):
-        warn = f"Email not found for {member}"
-        logger.warning(warn)
+        logger.warning("Email not found for %s", member)
     else:
         email = email_tag.getText().strip()
 
@@ -93,13 +126,27 @@ def scrape_detailed_legislator_info(http: urllib3.PoolManager, url: str, path: s
         phone = phone_tag.getText().strip()
         return email, phone, committees
 
-    warn = f"Phone not found for {member}"
-    logger.warning(warn)
+    logger.warning("Phone not found for %s", member)
     return email, phone, committees
 
 
-def parse_legislators_page(http: urllib3.PoolManager, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str, str, str, str]]:
+def collect_municipality_data(http: urllib3.PoolManager, value: str, query: str = "selectedLetter") -> list[tuple[str, str, str, str, str]]:
+    """
+    Collect basic municipality data and their legislator's profile page URLs.
+
+    Args:
+    http: urllib3 PoolManager instance for making HTTP requests.
+    value: Query parameter value (typically a letter for alphabetical pagination).
+    query: Query parameter name (default: "selectedLetter").
+
+    Returns:
+    List of tuples containing (district, town, member, party, detail_url).
+
+    """
+    time.sleep(REQUEST_DELAY)  # Rate limiting
+
     page_url = urlunparse(("https", HouseURL.StateLegislatureNetloc, HouseURL.MunicipalityListPath, "", urlencode({query: value}), ""))
+    logger.debug("Getting legislators list from URL: %s", page_url)
     response = http.request("GET", page_url)
     soup = BeautifulSoup(response.data, "html.parser")
 
@@ -108,18 +155,48 @@ def parse_legislators_page(http: urllib3.PoolManager, value: str, query: str = "
         return []
 
     legislators: list = []
-    for table_row_tag in tqdm(table_tag.find_all("tr")[2:], unit="legislator", leave=False):  # Skip first 2 rows (header)
+    for table_row_tag in table_tag.find_all("tr")[2:]:  # Skip first 2 rows (header)
         row_cell = table_row_tag.find("td", class_="short-tabletdlf")
         district, town, member, party = extract_legislator_from_string(row_cell.get_text())
         row_link = table_row_tag.find("a", class_="btn btn-default", href=True)
-        email, phone, committees = scrape_detailed_legislator_info(http, HouseURL.StateLegislatureNetloc, row_link["href"], member)
-        legislators.append((district, town, member, party, email, phone, committees))
+        detail_url = row_link["href"] if row_link else ""
+        legislators.append((district, town, member, party, detail_url))
 
     return legislators
 
 
+def get_most_common_url(urls: list[str]) -> str:
+    """
+    Return the most common URL from a list of URLs.
+
+    Args:
+    urls: List of URL strings.
+
+    Returns:
+    The most frequently occurring URL, or empty string if list is empty.
+
+    """
+    if not urls:
+        return ""
+    counter = Counter(urls)
+    return counter.most_common(1)[0][0]
+
+
 def get_pagination(http: urllib3.PoolManager) -> list[str]:
+    """
+    Retrieve pagination letters/values from the municipality list page.
+
+    Args:
+    http: urllib3 PoolManager instance for making HTTP requests.
+
+    Returns:
+    List of pagination values (typically alphabetical letters).
+
+    """
+    time.sleep(REQUEST_DELAY)  # Rate limiting
+
     list_url = urlunparse(("https", HouseURL.StateLegislatureNetloc, HouseURL.MunicipalityListPath, "", "", ""))
+    logger.debug("Getting pagination from URL: %s", list_url)
     response = http.request("GET", list_url)
     soup = BeautifulSoup(response.data, "html.parser")
     pages = soup.find("ul", class_="pagination")
@@ -130,22 +207,59 @@ def get_pagination(http: urllib3.PoolManager) -> list[str]:
 
 
 def main() -> None:
-    # Configure retry strategy
-    retry_strategy = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504], respect_retry_after_header=True)
+    """
+    Scrape state rep municipality data.
 
-    # Create a PoolManager with retry strategy
+    Performs the following steps:
+    1. Collects basic municipality data from all paginated pages
+    2. Groups legislators by name and identifies most common detail URL
+    3. Scrapes detailed information once per unique legislator
+    4. Combines all data and writes to CSV file
+    """
+    retry_strategy = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504], respect_retry_after_header=True)
     http = urllib3.PoolManager(retries=retry_strategy)
 
+    logger.info("Collecting municipality data from all pages...")
     letters = get_pagination(http)
-    pages = [parse_legislators_page(http, letter) for letter in tqdm(letters, unit="page")]
+    all_municipalities = []
+    for letter in tqdm(letters, unit="page", desc="Collecting data"):
+        legislators = collect_municipality_data(http, letter)
+        all_municipalities.extend(legislators)
+    logger.info("Found %d municipalities across %d pages", len(all_municipalities), len(letters))
 
-    with Path("district_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
+    logger.info("Grouping legislators and finding most common URLs...")
+    legislator_urls = defaultdict(list)
+    legislator_records = defaultdict(list)
+
+    for district, town, member, party, detail_url in all_municipalities:
+        if member and detail_url:
+            legislator_urls[member].append(detail_url)
+            legislator_records[member].append((district, town, party))
+
+    logger.info("Scraping details for %d unique legislators...", len(legislator_urls))
+    legislator_details = {}
+
+    for member in tqdm(legislator_urls.keys(), unit="legislator", desc="Scraping details"):
+        most_common_url = get_most_common_url(legislator_urls[member])
+        email, phone, committees = scrape_detailed_legislator_info(http, HouseURL.StateLegislatureNetloc, most_common_url, member)
+        legislator_details[member] = (email, phone, committees)
+
+    logger.info("Building final output...")
+    final_data = []
+    for district, town, member, party, _ in all_municipalities:
+        if member in legislator_details:
+            email, phone, committees = legislator_details[member]
+            final_data.append((district, town, member, party, email, phone, committees))
+        else:
+            final_data.append((district, town, member, party, "", "", ""))
+
+    with Path("house_municipality_data.csv").open(mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerows([("District", "Town", "Member", "Party", "Email", "Phone", "Committees")])
-        for page in pages:
-            writer.writerows(page)
+        writer.writerows(final_data)
 
-    logger.info("CSV file 'district_data.csv' has been created.")
+    logger.info("CSV file 'house_municipality_data.csv' has been created.")
+    logger.info("Total records: %d, Unique legislators: %d", len(final_data), len(legislator_details))
 
 
 if __name__ == "__main__":
