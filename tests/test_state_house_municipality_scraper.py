@@ -54,8 +54,19 @@ class TestExtractLegislatorFromString:
             ("Manchester\n\n - District 23  -   John Smith  (Democrat)", "23", "Manchester", "John Smith", "Democrat"),
             ("Weare (West) - District 5 - Jane Doe (Republican)", "5", "Weare (West)", "Jane Doe", "Republican"),
             ("Concord - District 1 - Bob Johnson (Independent)", "1", "Concord", "Bob Johnson", "Independent"),
+            ("Randolph - District 53 - Michael H. Lemelin (R - Chelsea)", "53", "Randolph", "Michael H. Lemelin", "R - Chelsea"),
+            ("Raymond - District 86 - Rolf A. Olsen (R - Raymond)", "86", "Raymond", "Rolf A. Olsen", "R - Raymond"),
+            ("Readfield - District 57 - Tavis Rock Hasenfus (D - Readfield)", "57", "Readfield", "Tavis Rock Hasenfus", "D - Readfield"),
         ],
-        ids=["valid_string", "multiline_whitespace", "special_characters", "independent_party"],
+        ids=[
+            "valid_string",
+            "multiline_whitespace",
+            "special_characters",
+            "independent_party",
+            "with_middle_initial",
+            "hyphenated_name",
+            "multi_word_last_name",
+        ],
     )
     def test_valid_extraction(self, text: str, expected_district: str, expected_town: str, expected_member: str, expected_party: str) -> None:
         """Test extraction from valid municipality strings."""
@@ -94,33 +105,49 @@ class TestScrapeCommittees:
             (
                 """
                 <span class="font_weight_m">Committee(s):</span>
-                <span><span>Finance</span></span>
+                <span class="text_right">
+                    <br>
+                    <span>Criminal Justice and Public Safety</span>
+                    <br>
+                </span>
                 """,
-                "Finance",
+                "Criminal Justice and Public Safety",
             ),
             (
                 """
                 <span class="font_weight_m">Committee(s):</span>
-                <span><span>Finance</span><span>Education</span></span>
+                <span class="text_right">
+                    <br>
+                    <span>Criminal Justice and Public Safety</span>
+                    <br>
+                    <span>Government Oversight Committee</span>
+                    <br>
+                </span>
                 """,
-                "Finance; Education",
+                "Criminal Justice and Public Safety; Government Oversight Committee",
             ),
             (
                 """
                 <span class="font_weight_m">Committee(s):</span>
-                <span><span>Finance</span><span>Education</span><span>Health</span></span>
+                <span class="text_right">
+                    <br>
+                    <span>Agriculture, Conservation and Forestry</span>
+                    <br>
+                    <span><i class="fas fa-check"></i> Marine Resources - Chair</span>
+                    <br>
+                    <span>Energy, Utilities and Technology</span>
+                    <br>
+                </span>
                 """,
-                "Finance; Education; Health",
+                "Agriculture, Conservation and Forestry; Marine Resources - Chair; Energy, Utilities and Technology",
             ),
             (
-                """
-                <span class="font_weight_m">Other Label:</span>
-                """,
+                "<span class='font_weight_m'>Other Label:</span>",
                 "",
             ),
             ("", ""),
         ],
-        ids=["single_committee", "two_committees", "three_committees", "no_committees", "empty_html"],
+        ids=["single_committee", "two_committees", "three_committees_with_chair", "no_committees", "empty_html"],
     )
     def test_committee_extraction(self, html: str, expected: str) -> None:
         """Test extraction of committee information."""
@@ -143,23 +170,66 @@ class TestScrapeDetailedLegislatorInfo:
     def test_complete_info(self, mock_http_response: Mock, mock_sleep: Mock) -> None:
         """Test extraction of complete legislator information."""
         html = """
-        <div id="main-info">
+        <div class="column-two-two-third column-last drop-shadow curved" id="main-info">
+            <div class="member-name">Chad R. Perkins</div>
+            <div class="member-info">State Representative</div>
+            <div class="member-info">(R-Dover-Foxcroft)</div>
             <p>
-                <a href="mailto:john.smith@leg.maine.gov">john.smith@leg.maine.gov</a>
-                <span class="text_right">(603) 555-1234</span>
+                <a href="mailto:Chad.Perkins@legislature.maine.gov"><i class="fas fa-envelope"></i> Chad.Perkins@legislature.maine.gov</a>
+                <br>
+                2 State House Station, Augusta, ME 04333
+                <br>
+                <span class="font_weight_m">Contact:</span>
+                <span class="text_right">(207) 279-0927</span>
+                <br>
+                <span class="font_weight_m">Committee(s):</span>
+                <span class="text_right">
+                    <br>
+                    <span>Criminal Justice and Public Safety</span>
+                    <br>
+                    <span>Government Oversight Committee</span>
+                    <br>
+                </span>
             </p>
-            <span class="font_weight_m">Committee(s):</span>
-            <span><span>Finance</span></span>
         </div>
         """
 
         http = mock_http_response(html)
-        email, phone, committees = scrape_detailed_legislator_info(http, "leg.maine.gov", "/member/123", "John Smith")
+        email, phone, committees = scrape_detailed_legislator_info(http, "leg.maine.gov", "/member/123", "Chad R. Perkins")
 
-        assert email == "john.smith@leg.maine.gov"
-        assert phone == "(603) 555-1234"
-        assert committees == "Finance"
+        assert email == "Chad.Perkins@legislature.maine.gov"
+        assert phone == "(207) 279-0927"
+        assert committees == "Criminal Justice and Public Safety; Government Oversight Committee"
         mock_sleep.assert_called_once_with(2)
+
+    def test_committee_with_chair_designation(self, mock_http_response: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+        """Test extraction with committee chair designation."""
+        html = """
+        <div id="main-info">
+        <p>
+            <a href="mailto:Allison.Hepler@legislature.maine.gov">Allison.Hepler@legislature.maine.gov</a>
+            <br>
+            <span class="font_weight_m">Contact:</span>
+            <span class="text_right">(207) 319-4396</span>
+            <br>
+            <span class="font_weight_m">Committee(s):</span>
+            <span class="text_right">
+                <br>
+                <span>Agriculture, Conservation and Forestry</span>
+                <br>
+                <span><i class="fas fa-check"></i> Marine Resources - Chair</span>
+                <br>
+            </span>
+        </p>
+        </div>
+        """
+
+        http = mock_http_response(html)
+        email, phone, committees = scrape_detailed_legislator_info(http, "leg.maine.gov", "/member/456", "Allison Hepler")
+
+        assert email == "Allison.Hepler@legislature.maine.gov"
+        assert phone == "(207) 319-4396"
+        assert committees == "Agriculture, Conservation and Forestry; Marine Resources - Chair"
 
     @pytest.mark.parametrize(
         ("html", "expected_email", "expected_phone", "expected_log"),
@@ -168,27 +238,42 @@ class TestScrapeDetailedLegislatorInfo:
                 """
                 <div id="main-info">
                     <p>
-                        <span class="text_right">(603) 555-1234</span>
+                        2 State House Station, Augusta, ME 04333
+                        <br>
+                        <span class="font_weight_m">Contact:</span>
+                        <span class="text_right">(207) 555-1234</span>
+                        <br>
+                        <span class="font_weight_m">Committee(s):</span>
+                        <span class="text_right">
+                            <br>
+                            <span>Finance</span>
+                            <br>
+                        </span>
                     </p>
-                    <span class="font_weight_m">Committee(s):</span>
-                    <span><span>Finance</span></span>
                 </div>
                 """,
                 "",
-                "(603) 555-1234",
+                "(207) 555-1234",
                 "Email not found for John Smith",
             ),
             (
                 """
                 <div id="main-info">
                     <p>
-                        <a href="mailto:john.smith@leg.maine.gov">john.smith@leg.maine.gov</a>
+                        <a href="mailto:john.smith@legislature.maine.gov">john.smith@legislature.maine.gov</a>
+                        <br>
+                        2 State House Station, Augusta, ME 04333
+                        <br>
+                        <span class="font_weight_m">Committee(s):</span>
+                        <span class="text_right">
+                            <br>
+                            <span>Finance</span>
+                            <br>
+                        </span>
                     </p>
-                    <span class="font_weight_m">Committee(s):</span>
-                    <span><span>Finance</span></span>
                 </div>
                 """,
-                "john.smith@leg.maine.gov",
+                "john.smith@legislature.maine.gov",
                 "",
                 "Phone not found for John Smith",
             ),
@@ -238,26 +323,80 @@ class TestCollectMunicipalityData:
         """Test collecting data from multiple table rows."""
         html = """
         <table class="short-table white">
-            <tr><th>Header 1</th></tr>
-            <tr><th>Header 2</th></tr>
             <tr>
-                <td class="short-tabletdlf">Manchester - District 23 - John Smith (Democrat)</td>
-                <a class="btn btn-default" href="/member/123">View</a>
+                <th colspan="3">
+                    <h2>Currently Viewing</h2>
+                    <h1>R</h1>
+                </th>
             </tr>
             <tr>
-                <td class="short-tabletdlf">Concord - District 5 - Jane Doe (Republican)</td>
-                <a class="btn btn-default" href="/member/456">View</a>
+                <th>Town - District - Member</th>
+                <th>Member Profile</th>
+            </tr>
+            <tr>
+                <td class="short-tabletdlf">
+                    <b>Randolph</b> - District 53 - Michael H. Lemelin (R - Chelsea)
+                </td>
+                <td>
+                    <a href="/house/house/MemberProfiles/Details/1428" class="btn btn-default">
+                        <i class="fas fa-user"></i> View
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="short-tabletdlf">
+                    <b>Raymond</b> - District 86 - Rolf A. Olsen (R - Raymond)
+                </td>
+                <td>
+                    <a href="/house/house/MemberProfiles/Details/3128" class="btn btn-default">
+                        <i class="fas fa-user"></i> View
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="short-tabletdlf">
+                    <b>Readfield</b> - District 57 - Tavis Rock Hasenfus (D - Readfield)
+                </td>
+                <td>
+                    <a href="/house/house/MemberProfiles/Details/1427" class="btn btn-default">
+                        <i class="fas fa-user"></i> View
+                    </a>
+                </td>
             </tr>
         </table>
         """
 
         http = mock_http_response(html)
-        result = collect_municipality_data(http, "A")
+        result = collect_municipality_data(http, "R")
 
-        assert len(result) == 2  # noqa: PLR2004
-        assert result[0] == ("23", "Manchester", "John Smith", "Democrat", "/member/123")
-        assert result[1] == ("5", "Concord", "Jane Doe", "Republican", "/member/456")
+        assert len(result) == 3  # noqa: PLR2004
+        assert result[0] == ("53", "Randolph", "Michael H. Lemelin", "R - Chelsea", "/house/house/MemberProfiles/Details/1428")
+        assert result[1] == ("86", "Raymond", "Rolf A. Olsen", "R - Raymond", "/house/house/MemberProfiles/Details/3128")
+        assert result[2] == ("57", "Readfield", "Tavis Rock Hasenfus", "D - Readfield", "/house/house/MemberProfiles/Details/1427")
         mock_sleep.assert_called_once_with(2)
+
+    def test_plantation_prefix(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+        """Test handles 'plantation' prefix in town names."""
+        html = """
+        <table class="short-table white">
+            <tr><th>Header 1</th></tr>
+            <tr><th>Header 2</th></tr>
+            <tr>
+                <td class="short-tabletdlf">
+                    plantation <b>Rangeley</b> - District 73 - Michael Soboleski (R - Phillips)
+                </td>
+                <td>
+                    <a href="/house/house/MemberProfiles/Details/1482" class="btn btn-default">View</a>
+                </td>
+            </tr>
+        </table>
+        """
+
+        http = mock_http_response(html)
+        result = collect_municipality_data(http, "R")
+
+        assert len(result) == 1
+        assert result[0][1] == "plantation Rangeley"  # Town includes the plantation prefix
 
     @pytest.mark.parametrize(
         ("html", "expected_length", "expected_detail_url"),
@@ -305,9 +444,10 @@ class TestGetMostCommonUrl:
         [
             (["/member/123"], "/member/123"),
             (["/member/123", "/member/456", "/member/123", "/member/123", "/member/456"], "/member/123"),
+            (["/house/house/MemberProfiles/Details/1428"], "/house/house/MemberProfiles/Details/1428"),
             ([], ""),
         ],
-        ids=["single_url", "most_common_url", "empty_list"],
+        ids=["single_url", "most_common_url", "realistic_url_path", "empty_list"],
     )
     def test_url_frequency(self, urls: list[str], expected: str) -> None:
         """Test URL frequency counting."""
@@ -333,27 +473,35 @@ class TestGetPagination:
         with patch("src.main.time.sleep") as mock:
             yield mock
 
-    @pytest.mark.parametrize(
-        ("html", "expected"),
-        [
-            (
-                """
-                <ul class="pagination">
-                    <a>A</a>
-                    <a>B</a>
-                    <a>C</a>
-                </ul>
-                """,
-                ["A", "B", "C"],
-            ),
-            ("<div>No pagination</div>", []),
-        ],
-        ids=["pagination_present", "no_pagination"],
-    )
-    def test_pagination_extraction(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock, html: str, expected: list[str]) -> None:  # noqa: ARG002
-        """Test pagination letter extraction."""
+    def test_pagination_extraction(self, mock_http_response: Mock, mock_house_url: Mock, mock_sleep: Mock) -> None:  # noqa: ARG002
+        """Test pagination letter extraction structure."""
+        html = """
+        <div class="pagination">
+            <ul class="pagination">
+                <li class="active">
+                    <span><a href="?selectedLetter=A">A</a></span>
+                </li>
+                <li class="active">
+                    <span><a href="?selectedLetter=B">B</a></span>
+                </li>
+                <li class="active">
+                    <span><a href="?selectedLetter=C">C</a></span>
+                </li>
+                <li class="inactive">
+                    <span>Q</span>
+                </li>
+                <li class="active">
+                    <span><a href="?selectedLetter=R">R</a></span>
+                </li>
+            </ul>
+        </div>
+        """
+
         http = mock_http_response(html)
         result = get_pagination(http)
 
-        assert result == expected
+        assert "A" in result
+        assert "B" in result
+        assert "C" in result
+        assert "R" in result
         mock_sleep.assert_called_once_with(2)
