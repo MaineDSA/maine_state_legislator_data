@@ -355,7 +355,7 @@ class TestCollectMunicipalityData:
         http = mock_http_response(html)
         result = collect_municipality_data(http, "R")
 
-        assert len(result) == 3  # noqa: PLR2004
+        assert len(result) == 3
         assert result[0] == ("53", "Randolph", "Michael H. Lemelin", "R - Chelsea", "/house/house/MemberProfiles/Details/1428")
         assert result[1] == ("86", "Raymond", "Rolf A. Olsen", "R - Raymond", "/house/house/MemberProfiles/Details/3128")
         assert result[2] == ("57", "Readfield", "Tavis Rock Hasenfus", "D - Readfield", "/house/house/MemberProfiles/Details/1427")
