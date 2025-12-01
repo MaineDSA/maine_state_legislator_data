@@ -26,6 +26,8 @@ dev = [
     "types-tqdm==4.67.0.20250809"
 ]
 
+[tool]
+
 [tool.ruff]
 line-length = 160
 include = [
@@ -91,28 +93,29 @@ ignore = [
     "FIX002",  # line-contains-todo (FIX002)
 ]
 
-[tool.pytest.ini_options]
-addopts = "--cov=src --no-cov-on-fail -n auto"
-testpaths = [
-    "tests/",
+[tool.ruff.lint.per-file-ignores]
+"**/{tests,docs}/*" = [
+    "SLF001",  # private-member-access (SLF001)
+    "PLR2004",  # magic-value-comparison (PLR2004)
 ]
+
+[tool.pytest]
+addopts = ["-n", "auto", "--cov=src", "--no-cov-on-fail"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage]
 
 [tool.coverage.run]
 branch = true
 relative_files = true
-command_line = "-m pytest"
-
-[tool.coverage.paths]
-source = [
-    "src/",
-]
-omit = [
-    "tests/",
-]
 
 [tool.coverage.report]
 exclude_also = [
     "logger\\.",
     'if __name__ == "__main__":',
-    "asyncio\\.run(main())",
+    "asyncio\\.run\\(main\\(\\)\\)",
 ]
